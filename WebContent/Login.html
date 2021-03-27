@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>회원가입</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- 필수 -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!--  
+  	조별과제 : 
+    jquery 를 사용하여 유효성 검증 코드를 만드시고
+    MemberJoinOK.jsp 를 통해서 데이터 받아서 결과 출력하세요
+     
+    userId : keyup 이벤트  정해진 표현에 맞지 않으면 ID 추가 입력
+    ex) let id ="정규표현식" 
+    ex) if(id.test($(this).val()) != true) { 확인요청 } else {}
+    
+    userPass : keyup 이벤트에서 정해진 표현과 일치 하지 않으면 (정규표현 가능)
+    
+    userPassCheck : keyup  >> userPass 같은 값인지 확인 일치여부 확인
+    
+    userEmail : keyup 이벤트에서 email 형식과 일치여부 확인
+    
+    userPhone : keyup 이벤트에서 phone 형식과 일치여부 확인
+    
+    
+    submit 전송시 
+    userId , userPass , userPassCheck , userEmail , userPhone
+    , userSsn1 , userSsn2 , userZipCode , userPhone
+       값이 입력되지 않으면 다시 입력을 요청
+  -->
+<style>
+body {
+	font-family: "malgun gothic";
+	font-size: 9pt;
+}
+
+th {
+	text-align: right;
+	background-color: #dbdbdb
+}
+
+th.title {
+	text-align: center;
+	font-size: 12pt;
+	background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+	<form name="signForm" id="signForm" method="post"
+		action="MemberJoinOK.jsp">
+		<table>
+			<tr>
+				<th colspan="2" class="title">회원가입</th>
+			</tr>
+			<tr>
+				<th>아이디</th>
+				<td><input type="text" maxlength="20" id="userId" name="userId"
+					title="3~16자리의 영문+숫자 조합으로 입력해주세요"></td>
+				<td class="tdid"></td>
+			</tr>
+
+			<tr>
+				<th>이름</th>
+				<td><input type="text" maxlength="20" id="userName"
+					name="userName" title="이름">
+				</td>
+				<td class="tdname"></td>
+			</tr>
+			<tr>
+				<th>패스워드</th>
+				<td><input type="password" maxlength="20" id="userPass"
+					name="userPass" placeholder="8-20자리,영문,숫자,특수문자를 포함"
+					title="8-20자리,영문,숫자,특수문자를 포함"></td>
+				<td class="tdpw"></td>
+			</tr>
+			<tr>
+				<th>패스워드 확인</th>
+				<td><input type="password" maxlength="20" id="userPassCheck"
+					name="userPassCheck" title="패스워드 확인"></td>
+				<td class="tdpwch"></td>
+			</tr>
+			<tr>
+				<th>성별</th>
+				<td><input type="radio" id="gender" name="gender" value="male">남
+					&nbsp&nbsp; <input type="radio" id="gender" name="gender"
+					value="female">여</td>
+			</tr>
+			<tr>
+				<th>이메일</th>
+				<td><input type="text" maxlength="50" id="userEmail"
+					name="userEmail" title="이메일"></td>
+				<td class="tdmail"></td>
+			</tr>
+			<tr>
+				<th>주민번호</th>
+				<td><input type="text" maxlength="6" id="userSsn1"
+					name="userSsn1" title="주민번호1"> - <input type="password"
+					maxlength="7" id="userSsn2" name="userSsn2" title="주민번호2 ">
+				</td>
+			</tr>
+			<tr>
+				<th>우편번호</th>
+				<td><input type="text" maxlength="10" id="userZipCode"
+					name="userZipCode" size="9" title="주소-우편번호"> <input
+					type="button" value="우편번호검색" id="btnAddr" /></td>
+			</tr>
+			<tr>
+				<th>주소1</th>
+				<td><input type="text" maxlength="20" size="45" id="userAddr1"
+					name="userAddr1" title="주소-기본주소"></td>
+			</tr>
+			<tr>
+				<th>주소2</th>
+				<td><input type="text" maxlength="20" size="45" id="userAddr2"
+					name="userAddr2" title="주소-상세주소"></td>
+			</tr>
+			<tr>
+				<th>핸드폰번호</th>
+				<td><input type="text" size="30" maxlength="20" id="userPhone" placeholder="010-0000-0000"
+					name="userPhone" title="010-0000-0000 으로 입력"></td>
+				<td class="tdphone"></td>
+			</tr>
+			<tr>
+				<th>취미</th>
+				<td><input type="checkbox" name="hobby" value="등산">등산
+					&nbsp;&nbsp; <input type="checkbox" name="hobby" value="자전거">자전거
+					&nbsp;&nbsp; <input type="checkbox" name="hobby" value="컴퓨터">컴퓨터
+					&nbsp;&nbsp; <input type="checkbox" name="hobby" value="영화감상">영화감상
+				</td>
+			</tr>
+			<tr>
+				<th>생년월일</th>
+				<td><select name="year" id="year" title="년도"
+					class="custom-select"></select> <select name="month" id="month"
+					title="월" class="custom-select"></select> <select name="day"
+					id="day" title="일" class="custom-select"></select></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" id="submit" value="가입완료">
+					<input type="reset" id="reset" value="입력취소"></td>
+			</tr>
+		</table>
+	</form>
+</body>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+ 
+	//ID 유효성 검사 : 대소문자 + 숫자 + 5~12자리 >> 정규표현식
+	function check_id(){
+		let id = $('#userId').val();
+		let spe = id.search(/[`~!@#$%^&*|\\\'\";:\/?]/gi);
+		
+		if(id.length < 4 || id.length > 12){
+			$('.tdid').text("5-12자리 이내로 입력하세요");
+			return false;
+		} else if (id.search(/\s/)!=-1){
+			$('.tdid').text("공백은 입력할 수 없습니다");
+			return false;
+		} else if (spe > 0 ){
+			$('.tdid').text("특수문자는 입력할 수 없습니다");
+			return false;
+		} else {
+			$('.tdid').text("");
+			return true;
+		}
+			
+	}
+	$('#userId').on('keyup', check_id);
+	
+	//이름 유효성: 공백 불가, 특수문자 불가, 숫자 불가
+	function check_name(){
+		let regExp = /^[가-힣]{2,5}$/;
+		let name = $('#userName').val();
+		if(regExp.test(name)){
+			$('.tdname').text("");
+			return true;
+		} else if (name.search(/\s/)!=-1){
+			$('.tdname').text("공백은 입력할 수 없습니다");
+			return false;
+		} else {
+			$('.tdname').text("이름이 올바르지 않습니다 (한글 2-5글자)");
+			return false;
+		}
+	}
+$('#userName').on('keyup', check_name);
+	
+	 /* 비밀번호 :
+		1. 8자리 ~ 20자리
+		2. 공백없이
+		3. 영문 + 숫자 + 특수문자 포함
+	*/
+	/* 비밀번호 유효성체크 */
+	function check_pwd(){
+		let password = $('#userPass').val();
+		let num = password.search(/[0-9]/g);
+		let eng = password.search(/[0-9]/ig);
+		let spe = password.search(/[`~!@#$%^&*|\\\'\";:\/?]/gi);
+		let text = "";
+		//1. 8자리 ~20자리
+		if(password.length < 8 || password.length > 13){
+			$('.tdpw').text("8-20자리 이내로 입력하세요");
+			return false;
+		} else if (password.search(/\s/)!=-1){
+			$('.tdpw').text("공백은 입력할 수 없습니다");
+			return false;
+		} else if (num < 0 || eng < 0  || spe < 0 ){
+			$('.tdpw').text("영문, 숫자, 특수문자를 포함하여 입력하세요");
+			return false;
+		} else {
+			$('.tdpw').text("");
+			return true;
+		}
+		if(password == ''){
+			alert('비밀번호를 입력하세요');
+		}
+	}
+	/* 비밀번호 일치 체크 */
+	function check_pwd2(){
+		let check = $('#userPassCheck').val();
+		let pwd = $('#userPass').val();
+		if(!(check===pwd)){
+			$('.tdpwch').text("비밀번호가 일치하지 않습니다");
+			return false;
+		}else {
+			$('.tdpwch').text("");
+			return true;
+		}
+		
+		if(check == ''){
+			alert('비밀번호를 입력하세요');
+		}
+	}
+	$('#userPass').on('keyup', check_pwd);
+	$('#userPassCheck').on('keyup', check_pwd2);
+	 
+ 	//성별 유효성 체크
+ 	function check_gender(){
+ 		if($("input[name=gender]:radio:checked").length < 1){
+ 			alert("성별을 입력하세요");
+ 			$('#gender').focus();
+ 			return false;
+ 		}
+ 	}
+ 	
+ 	//이메일 유효성 체크
+ 	function check_email(){
+ 		let userEmail = $('#userEmail').val();
+ 		let regExp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+
+ 		if(!regExp.test(userEmail)) {
+        	$('.tdmail').text('이메일 주소가 올바르지 않습니다');
+        	return false;
+ 		}else if(userEmail.length < 1){
+ 			$('.tdmail').text('이메일 주소를 입력하세요');
+ 			return false;
+ 		}else {
+			$('.tdmail').text("");
+			return true;
+		}
+ 		if(userEmail == ''){
+			alert('이메일 주소를 입력하세요');
+		}
+    }
+ 	$('#userEmail').on('keyup', check_email);
+ 	
+ 	//우편번호 유효성 체크
+ 	function check_zipcode() {
+ 		if($('#userAddr1').val() == ""){
+			alert("우편번호를 입력하세요");
+			$('#userZipCode').focus();
+			return false;
+		}
+ 	}
+ 	
+	//주소1 유효성 체크
+	function check_addr1() {
+		if($('#userAddr1').val() == ""){
+			alert("주소를 입력하세요");
+			$('#userAddr1').focus();
+			return false;
+		}
+	}
+	
+	//주소2(상세주소) 유효성 체크
+	function check_addr2() {
+		if($('#userAddr2').val() == ""){
+			alert("주소2(상세주소)를 입력하세요");
+			$('#userAddr2').focus();
+			return false;
+		}
+	}
+	
+	//우편번호검색
+	$("#btnAddr").on("click",function(){
+		new daum.Postcode({
+			oncomplete: function(data) {
+				var fullAddr = '';
+				var extraAddr = '';
+				if (data.userSelectedType === 'R') {
+					fullAddr = data.roadAddress;
+				} else {
+					fullAddr = data.jibunAddress;
+				}
+				if(data.userSelectedType === 'R'){
+					if(data.bname !== ''){
+						extraAddr += data.bname;
+					}
+					if(data.buildingName !== ''){
+						extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+					}
+					fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+				}
+				$('#userZipCode').val(data.zonecode);
+				$('#userAddr1').val(fullAddr);
+				$('#userAddr2').focus();
+			}
+		}).open();
+	});
+
+ 	//주민번호 유효성 체크
+ 	function check_ssn() {
+ 		let userSsn1 = $('#userSsn1').val(),
+ 	    	userSsn2 = $('#userSsn2').val(),
+ 	    	ssn     = userSsn1+''+userSsn2,
+ 	    	arr_ssn = [],
+ 	    	compare = [2,3,4,5,6,7,8,9,2,3,4,5],
+ 	    	sum     = 0;
+ 	     // 입력여부 체크
+ 	     if (userSsn1 == '') {
+ 	    	 alert('주민번호를 입력하세요');
+ 	         return false;
+ 	     }
+ 	     if (userSsn2 == '') {
+ 	         alert('주민번호를 입력하세요');
+ 	         return false;
+ 	     }    
+ 	     // 입력값 체크
+ 	     if (userSsn1.match('[^0-9]')) {
+ 	         alert("주민번호는 숫자만 입력할 수 있습니다"); 
+ 	         return false; 
+ 	     }
+ 	     if (userSsn2.match('[^0-9]')) {
+ 	         alert("주민번호는 숫자만 입력할 수 있습니다"); 
+ 	         return false; 
+ 	     }
+ 	     // 자리수 체크
+ 	     if (ssn.length != 13) {
+ 	         alert("주민번호가 올바르지 않습니다");
+ 	         return false;
+ 	     }    
+ 	     // 공식: M = (11 - ((2×A + 3×B + 4×C + 5×D + 6×E + 7×F + 8×G + 9×H + 2×I + 3×J + 4×K + 5×L) % 11)) % 11
+ 	     for (let i = 0; i<13; i++) { 
+ 	         arr_ssn[i] = ssn.substring(i,i+1); 
+ 	     }
+ 	     for (let i = 0; i<12; i++) {
+ 	         sum = sum + (arr_ssn[i] * compare[i]); 
+ 	     }
+ 	     sum = (11 - (sum % 11)) % 10;
+ 	     if (sum != arr_ssn[12]) { 
+ 	         alert("주민번호가 올바르지 않습니다");
+ 	         return false; 
+ 	     }
+ 	 }
+ 	
+ 	//핸드폰번호 유효성 체크
+ 	function check_phone(){
+		let phonenum = $('#userPhone').val();  				
+		let regExp = /^\d{3}-\d{3,4}-\d{4}$/;
+		if(regExp.test(phonenum)){
+			$('.tdphone').text("");
+			return true;
+		} else {
+			$('.tdphone').text("핸드폰번호가 올바르지 않습니다(ex. 010-0000-0000)");
+			return false;
+		}
+	}
+	$('#userPhone').on('keyup', check_phone);
+ 	
+	//취미 유효성 체크
+	function check_hobby(){
+		if(($("input:checkbox[name=hobby]:checked").length)==0){
+			alert("취미를 1개 이상 선택하세요");
+			return false;
+		}
+	}
+//생년월일 셀렉트박스 생성
+	 $(document).ready(function () {
+		 setDateBox();
+	 });
+	
+	//생년월일 셀렉트박스
+	function setDateBox() {
+		let dt = new Date();
+		let currentYear = dt.getFullYear();
+		let year = "";
+		$("#year").append("<option value=''>년도</option>");
+		for (let y = (currentYear - 50); y <= (currentYear + 1); y++) {
+			$("#year").append("<option value='" + y + "'>" + y + "</option>");
+		}
+		let month;
+		$("#month").append("<option value=''>월</option>");
+		for (var i = 1; i <= 12; i++) {
+			$("#month").append("<option value='" + i + "'>" + i + "</option>");
+		}
+		let day;
+		$("#day").append("<option value=''>일</option>");
+		for (var i = 1; i <= 31; i++) {
+			$("#day").append("<option value='" + i + "'>" + i + "</option>");
+		}
+	}
+	//생년월일 유효성 체크
+	function check_birth() {
+		let y = $('#year').val();
+		let m = $('#month').val();
+		let d = $('#day').val();
+		if (y == '') {
+			alert('생년을 선택하세요');
+			return false;
+		}
+		if (m == '') {
+			alert('생월을 선택하세요');
+			return false;
+		}
+		if (d == '') {
+			alert('생일을 선택하세요');
+			return false;
+		}
+	}
+	
+ 	$('#submit').click(function(){
+ 		if(check_id() == false) return false; //x
+ 		if(check_name() == false) return false; //이름
+ 		if(check_pwd() == false) return false; //비밀번호
+ 		if(check_pwd2() == false) return false; //비밀번호 확인
+ 		if(check_gender() == false) return false; //성별
+ 		if(check_email() == false) return false; //이메일
+ 		if(check_ssn() == false) return false; //주민번호
+ 		if(check_zipcode() == false) return false; //우편번호
+ 		if(check_addr1() == false) return false; //주소1
+ 		if(check_addr2() == false) return false; //주소2
+ 		if(check_phone() == false) return false; //핸드폰번호
+ 		if(check_hobby() == false) return false; //취미
+ 		if(check_birth() == false) return false; //생년월일
+ 		
+ 		return true;
+ 	});
+ 	
+ 	//reset
+ 	$("#reset").click(function() {  
+         $("#signForm")[0].reset();    
+    }); 
+
+ </script>
+</html>
+​
