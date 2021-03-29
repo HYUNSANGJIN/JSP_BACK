@@ -17,4 +17,25 @@
   	<param-name>FilePath</param-name>
   	<param-value>C:\\Web\\Download</param-value>
   </context-param>
+  
+  <!-- 
+  		Webapp 전체 페이지에 적용될 수 있는 Error페이지 처리
+  		
+  		기준
+  		1. 상태 코드에 따라서(500 서버 코드문제 발생, 404 요청페이지가 없는것, 403 접근 권한)
+  			ㄴ 
+  		
+  		
+  		2. 예외 객체에 따라서(세분화) : NullPoint, IndexOutBound...
+   -->
+   
+  	<!-- <error-page>
+  		<error-code>404</error-code>
+  		<location>/error/error404.jsp</location>
+  	</error-page>
+  	
+  	<error-page>
+  		<error-code>500</error-code>
+  		<location>/error/error500.jsp</location>
+  	</error-page> -->
 </web-app>
